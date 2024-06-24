@@ -1,6 +1,6 @@
 This demonstrates a bug in iOS Safari.
 
-The bug manifests as distored/garbled WebAudio output.
+The bug manifests as distorted/garbled WebAudio output.
 
 Here are steps to reproduce:
 
