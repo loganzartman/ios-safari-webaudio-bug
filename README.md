@@ -1,4 +1,4 @@
-This demonstrates a bug in iOS Safari.
+This demonstrates a [bug](https://bugs.webkit.org/show_bug.cgi?id=275801) in iOS Safari.
 
 The bug manifests as distorted/garbled WebAudio output.
 
