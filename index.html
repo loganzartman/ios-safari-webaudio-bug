@@ -46,6 +46,7 @@
       }
 
       document.getElementById("passBtn").onclick = () => {
+        document.getElementById("failBtn").disabled = true;
         passing().catch((e) => console.error(e));
       };
       document.getElementById("failBtn").onclick = () => {
