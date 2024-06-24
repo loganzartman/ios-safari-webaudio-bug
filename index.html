@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="testBtn">Run test</button>
+    <script>
+      async function main() {
+        // problematic
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        const audioContext = new AudioContext();
+
+        // problematic
+        await audioContext.audioWorklet.addModule("./DummyNodeProcessor.js");
+
+        // garbled/distorted on iOS
+        // type of node does not seem to matter, just a demo
+        const oscNode = new OscillatorNode(audioContext, { frequency: 440 });
+        oscNode.connect(audioContext.destination);
+        oscNode.start();
+      }
+
+      document.getElementById("testBtn").onclick = () => {
+        main().catch((e) => console.error(e));
+      };
+    </script>
+  </body>
+</html>
