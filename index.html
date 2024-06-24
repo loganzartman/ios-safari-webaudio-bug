@@ -1,13 +1,18 @@
 <!DOCTYPE html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 <html>
   <body>
-    <button id="testBtn">Run test</button>
+    <p>Warning: loud!</p>
+    <button id="passBtn">Test reference</button>
+    <button id="failBtn">Test bug</button>
     <script>
-      async function main() {
-        const audioContext = new AudioContext();
+      async function failing() {
         // problematic
         await navigator.mediaDevices.getUserMedia({ audio: true });
 
+        const audioContext = new AudioContext();
 
         // problematic
         await audioContext.audioWorklet.addModule("./DummyNodeProcessor.js");
@@ -17,10 +22,35 @@
         const oscNode = new OscillatorNode(audioContext, { frequency: 440 });
         oscNode.connect(audioContext.destination);
         oscNode.start();
+
+        setTimeout(() => {
+          audioContext.close();
+        }, 500);
       }
 
-      document.getElementById("testBtn").onclick = () => {
-        main().catch((e) => console.error(e));
+      async function passing() {
+        const audioContext = new AudioContext();
+
+        // ok
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        await audioContext.audioWorklet.addModule("./DummyNodeProcessor.js");
+
+        const oscNode = new OscillatorNode(audioContext, { frequency: 440 });
+        oscNode.connect(audioContext.destination);
+        oscNode.start();
+
+        setTimeout(() => {
+          audioContext.close();
+        }, 500);
+      }
+
+      document.getElementById("passBtn").onclick = () => {
+        passing().catch((e) => console.error(e));
+      };
+      document.getElementById("failBtn").onclick = () => {
+        document.getElementById("passBtn").disabled = true;
+        failing().catch((e) => console.error(e));
       };
     </script>
   </body>
